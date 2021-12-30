@@ -4,10 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Campaign extends Model
+class Transaction extends Model
 {
 
-    protected $table = 'campaign';
+    protected $table = 'transactions';
 
     /**
      * The attributes that are mass assignable.
@@ -15,13 +15,9 @@ class Campaign extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id', 
-        'title', 
-        'description',
-        'campaign_start',
-        'campaign_goal',
-        'campaign_collected',
-        'status',
+        'user_id',
+        'campaign_id',
+        'amount'
     ];
 
     /**
@@ -32,8 +28,8 @@ class Campaign extends Model
     protected $hidden = [];
 
 
-    public function transactions() {
-        return $this->hasMany(Transaction::class);
+    public function campaign() {
+        return $this->belongsTo(Campaign::class);
     }
 
     public function user() {
