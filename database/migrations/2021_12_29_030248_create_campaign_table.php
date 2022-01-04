@@ -18,10 +18,11 @@ class CreateCampaignTable extends Migration
             $table->integer('user_id');
             $table->string('title');
             $table->string('description');
-            $table->date('campaign_start');
-            $table->bigInteger('campaign_goal');
-            $table->bigInteger('campaign_collected');
+            $table->string('cover');
+            $table->bigInteger('goal');
+            $table->bigInteger('collected');
             $table->boolean('status');
+            $table->date('over');
             $table->timestamps();
         });
     }
