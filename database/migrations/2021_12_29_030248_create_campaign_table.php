@@ -23,6 +23,7 @@ class CreateCampaignTable extends Migration
             $table->bigInteger('collected');
             $table->boolean('status');
             $table->date('over');
+            $table->string('url');
             $table->timestamps();
         });
     }
