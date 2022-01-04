@@ -70,9 +70,8 @@ class CampaignController extends Controller
     }
 
 
-    public function findCampaign($id) {
-        $data = Campaign::find($id);
-    
+    public function findCampaign($url) {
+        $data = Campaign::where('url', $url)->first();
 
         return response()->json($data, 200,);
     }
