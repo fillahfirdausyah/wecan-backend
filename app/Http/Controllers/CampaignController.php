@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Models\Campaign;
 use App\Models\Transaction;
+use App\Models\Comment;
+use App\Models\User;
+
 
 class CampaignController extends Controller
 {
@@ -72,8 +75,17 @@ class CampaignController extends Controller
 
     public function findCampaign($url) {
         $data = Campaign::where('url', $url)->first();
+        $user = Campaign::find($data->id)->user;
+        $comment = Campaign::join('comment', 'campaign.id', '=', 'comment.campaign_id')
+                                ->join('users', 'users.id', '=', 'comment.user_id')
+                                ->get(['users.username', 'comment.*']);
 
-        return response()->json($data, 200,);
+        return response()->json([
+            'campaign' => $data,
+            'user' => $user,
+            'comment' => $comment,
+        ], 200,);
+
     }
 
 
