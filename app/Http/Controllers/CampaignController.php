@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use App\Models\Campaign;
 use App\Models\Transaction;
 
@@ -29,26 +30,35 @@ class CampaignController extends Controller
 
     public function makeCampaign(Request $request) {
 
-        // return response()->json($request);
+        // return response()->json($request->cover->extension());
         
         $this->validate($request, [
-            'user_id'              => 'required',
-            'title'                => 'required',
-            'description'          => 'required',
-            'campaign_start'       => 'required',
-            'campaign_goal'        => 'required',
-            'campaign_collected'   => 'required',
+            'user_id'       => 'required',
+            'title'         => 'required',
+            'description'   => 'required',
+            'cover'         => 'required | mimes:jpeg,jpg,png',
+            'goal'          => 'required',
+            'collected'     => 'required',
+            'over'          => 'required',
+            'url'           => 'required',
             // 'status'               => 'required',
         ]);
 
+        $coverName = 'null';
+
+        $coverName = 'Campaign-' . $request->url . '-' . time() .  '.' . $request->cover->extension();
+        $request->cover->move('image/campaign', $coverName);
+
         $data = new Campaign;
-        $data->user_id            = $request->user_id;
-        $data->title              = $request->title;
-        $data->description        = $request->description;
-        $data->campaign_start     = $request->campaign_start;
-        $data->campaign_goal      = $request->campaign_goal;
-        $data->campaign_collected = $request->campaign_collected;
-        $data->status             = false;
+        $data->user_id      = $request->user_id;
+        $data->title        = $request->title;
+        $data->description  = $request->description;
+        $data->over         = $request->over;
+        $data->goal         = $request->goal;
+        $data->collected    = $request->collected;
+        $data->status       = false;
+        $data->cover        = $coverName;
+        $data->url          = $request->url;
         $data->save();
 
         return response()->json([
