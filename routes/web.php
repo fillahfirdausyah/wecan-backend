@@ -24,8 +24,8 @@ $router->group(['middleware' => 'auth','prefix' => 'api'], function ($router)  {
     $router->post('/campaign/add', 'CampaignController@makeCampaign');
     $router->get('/my-campaign', 'CampaignController@myCampaign');
     // Transaction
-    $router->post('/campaign/donation', 'CampaignController@payDonation');
-    $router->get('/campaign/transaction', 'CampaignController@transaction');
+    $router->post('/campaign/donation/pay/{url}', 'CampaignController@payDonation');
+    // $router->get('/campaign/transaction', 'CampaignController@transaction');
     // Comment
     $router->post('/comment', 'CommentController@addComment');
     // Wallet
