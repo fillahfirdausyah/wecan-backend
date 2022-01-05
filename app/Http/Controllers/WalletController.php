@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\Wallet;
+use App\Models\User;
 
 class WalletController extends Controller
 {
@@ -15,6 +16,13 @@ class WalletController extends Controller
     public function __construct()
     {
         //
+    }
+
+    public function getWallet() {
+        $user = auth()->user();
+        $wallet = User::find($user->id)->wallet;
+
+        return response()->json($wallet, 200);
     }
 
     public function topUp(Request $request) {

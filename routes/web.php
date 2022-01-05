@@ -29,6 +29,7 @@ $router->group(['middleware' => 'auth','prefix' => 'api'], function ($router)  {
     // Comment
     $router->post('/comment', 'CommentController@addComment');
     // Wallet
+    $router->get('/wallet', 'WalletController@getWallet');
     $router->post('/wallet/topup', 'WalletController@topUp');
 });
 
