@@ -73,6 +73,14 @@ class CampaignController extends Controller
     }
 
 
+    public function myCampaign() {
+        $user = auth()->user();
+        $campaign = User::find($user->id)->campaign;
+
+        return response()->json($campaign, 200);
+    }
+
+
     public function findCampaign($url) {
         $data = Campaign::where('url', $url)->first();
         $user = Campaign::find($data->id)->user;
