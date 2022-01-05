@@ -26,8 +26,10 @@ $router->group(['middleware' => 'auth','prefix' => 'api'], function ($router)  {
     // Transaction
     $router->post('/campaign/donation', 'CampaignController@payDonation');
     $router->get('/campaign/transaction', 'CampaignController@transaction');
-    // Commetn
+    // Comment
     $router->post('/comment', 'CommentController@addComment');
+    // Wallet
+    $router->post('/wallet/topup', 'WalletController@topUp');
 });
 
 $router->group(['prefix' => 'api'], function () use ($router) {
