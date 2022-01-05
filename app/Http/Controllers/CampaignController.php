@@ -8,6 +8,7 @@ use App\Models\Campaign;
 use App\Models\Transaction;
 use App\Models\Comment;
 use App\Models\User;
+use App\Models\Wallet;
 
 
 class CampaignController extends Controller
@@ -97,17 +98,36 @@ class CampaignController extends Controller
     }
 
 
-    public function payDonation(Request $request) {
+    public function payDonation(Request $request, $url) {
+        
+        $user = auth()->user();
+        $campaign = Campaign::where('url', $url)->first();
+        $currentCollected = $campaign->collected;
+        $newCollected = $request->amount + $currentCollected;
+        $campaign->collected = $newCollected;
+        $campaign->save();
 
-        $data = new Transaction;
-        $data->user_id      = $request->user_id;
-        $data->campaign_id  = $request->campaign_id;
-        $data->amount       = $request->amount;
-        $data->save();
+        $comment = new Comment;
+        $comment->user_id = $user->id;
+        $comment->campaign_id = $campaign->id;
+        $comment->content = $request->content;
+        $comment->save();
+
+        $transaction = new Transaction;
+        $transaction->user_id      = $user->id;
+        $transaction->campaign_id  = $campaign->id;
+        $transaction->amount       = $request->amount;
+        $transaction->save();
+
+        $wallet = Wallet::where('user_id', $user->id)->first();
+        $newBallance = $wallet->balance - $request->amount;
+        $wallet->balance = $newBallance;
+        $wallet->save();
+
+
 
         return response()->json([
             'status' => 'success',
-            'data' => $data,
         ], 200);
 
     }
