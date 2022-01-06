@@ -27,8 +27,7 @@ class WalletController extends Controller
 
     public function topUp(Request $request) {
         $user  = auth()->user();
-        $wallet = new Wallet;
-        $wallet->user_id = $request->user_id;
+        $wallet = Wallet::where('user_id', $user->id)->first();
         $wallet->balance = $request->balance;
         $wallet->save();
 
