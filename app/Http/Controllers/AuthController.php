@@ -25,14 +25,18 @@ class AuthController extends Controller
     {
         //validate incoming request 
         $this->validate($request, [
-            'username' => 'required',
-            'password' => 'required',
+            'username'  => 'required',
+            'password'  => 'required',
+            'email'     => 'required',
+            'name'      => 'required',
         ]);
 
         try 
         {
             $user = new User;
-            $user->username= $request->input('username');
+            $user->username = $request->input('username');
+            $user->email = $request->email;
+            $user->name = $request->name;
             $user->password = app('hash')->make($request->input('password'));
             $user->save();
 
