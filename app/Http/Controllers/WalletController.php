@@ -38,5 +38,17 @@ class WalletController extends Controller
         ], 200);
     }
 
+    public function makeWallet() {
+        $user = auth()->user();
+        $wallet = new Wallet;
+        $wallet->user_id = $user->id;
+        $wallet->balance = 0;
+        $wallet->save();
+
+        return response()->json([
+            'status' => 'Berhasil'
+        ], 200);
+    }
+
     //
 }
