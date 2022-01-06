@@ -85,14 +85,20 @@ class CampaignController extends Controller
     public function findCampaign($url) {
         $data = Campaign::where('url', $url)->first();
         $user = Campaign::find($data->id)->user;
-        $comment = Campaign::join('comment', 'campaign.id', '=', 'comment.campaign_id')
+        $comment = Campaign::where('campaign.id', $data->id)->join('comment', 'campaign.id', '=', 'comment.campaign_id')
                                 ->join('users', 'users.id', '=', 'comment.user_id')
-                                ->get(['users.username', 'comment.*']);
+                                ->get(['users.name', 'comment.*']);
+
+        $transaction = Campaign::where('campaign.id', $data->id)->join('transactions', 'campaign.id', '=', 'transactions.campaign_id')
+                       ->join('users', 'users.id', '=', 'transactions.user_id')
+                       ->get(['users.name', 'transactions.*']); 
+
 
         return response()->json([
             'campaign' => $data,
             'user' => $user,
             'comment' => $comment,
+            'donation' => $transaction,
         ], 200,);
 
     }
