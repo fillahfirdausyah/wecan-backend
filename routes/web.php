@@ -31,12 +31,13 @@ $router->group(['middleware' => 'auth','prefix' => 'api'], function ($router)  {
     // Wallet
     $router->get('/wallet', 'WalletController@getWallet');
     $router->post('/wallet/topup', 'WalletController@topUp');
+    $router->get('/wallet/make', 'WalletController@makeWallet');
 });
 
 $router->group(['prefix' => 'api'], function () use ($router) {
     // Auth
-    $router->post('register', 'AuthController@register');
-    $router->post('login', 'AuthController@login');
+    $router->post('/register', 'AuthController@register');
+    $router->post('/login', 'AuthController@login');
 
     // Campaign
     $router->get('/campaign', 'CampaignController@index');
