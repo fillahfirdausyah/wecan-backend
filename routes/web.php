@@ -22,16 +22,29 @@ $router->group(['middleware' => 'auth','prefix' => 'api'], function ($router)  {
 
     // Campaign
     $router->post('/campaign/add', 'CampaignController@makeCampaign');
+    $router->get('/campaign/pending', 'CampaignController@getPendingCampaign');
+    $router->get('/campaign/accept/{url}', 'CampaignController@acceptCampaign');
     $router->get('/my-campaign', 'CampaignController@myCampaign');
+
     // Transaction
     $router->post('/campaign/donation/pay/{url}', 'CampaignController@payDonation');
     // $router->get('/campaign/transaction', 'CampaignController@transaction');
+
     // Comment
     $router->post('/comment', 'CommentController@addComment');
+
     // Wallet
     $router->get('/wallet', 'WalletController@getWallet');
     $router->post('/wallet/topup', 'WalletController@topUp');
     $router->get('/wallet/make', 'WalletController@makeWallet');
+
+    // Topup
+    $router->get('/topup/pending', 'TopupController@getPendingTopup');
+    $router->get('/topup/accept/{id}', 'TopupController@acceptTopup');
+    $router->get('/topup/transaction/', 'TopupController@getTopupTransaction');
+
+    // Donation
+    $router->get('/donation/history', 'DonationController@donationHistory');
 });
 
 $router->group(['prefix' => 'api'], function () use ($router) {

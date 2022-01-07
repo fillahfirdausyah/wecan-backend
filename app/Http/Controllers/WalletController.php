@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 
 use App\Models\Wallet;
 use App\Models\User;
+use App\Models\Topup;
 
 class WalletController extends Controller
 {
@@ -26,14 +27,14 @@ class WalletController extends Controller
     }
 
     public function topUp(Request $request) {
-        $user  = auth()->user();
-        $wallet = Wallet::where('user_id', $user->id)->first();
-        $wallet->balance = $request->balance;
-        $wallet->save();
+        $topup = new Topup;
+        $topup->user_id = $request->user_id;
+        $topup->amount = $request->amount;
+        $topup->status = 'pending';
+        $topup->save();
 
         return response()->json([
-            'status' => 'Success',
-            'data' => $wallet,
+            'status' => 'succes',
         ], 200);
     }
 

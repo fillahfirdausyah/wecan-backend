@@ -24,7 +24,7 @@ class CampaignController extends Controller
     }
 
     public function index() {
-        $data = Campaign::all();
+        $data = Campaign::where('status', 'accepted')->get();
 
         return response()->json([
             'status' => 'success',
@@ -60,7 +60,7 @@ class CampaignController extends Controller
         $data->over         = $request->over;
         $data->goal         = $request->goal;
         $data->collected    = $request->collected;
-        $data->status       = false;
+        $data->status       = 'pending';
         $data->cover        = $coverName;
         $data->url          = $request->url;
         $data->save();
@@ -136,5 +136,22 @@ class CampaignController extends Controller
             'status' => 'success',
         ], 200);
 
+    }
+
+    public function getPendingCampaign() {
+        $campaign = Campaign::where('status', 'pending')->get();
+
+        return response()->json($campaign, 200);
+    }
+
+    public function acceptCampaign($url) {
+        $campaign = Campaign::where('url', $url)->first();
+        $campaign->status = 'accepted';
+        $campaign->save();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Campaign diterima',
+        ], 200);
     }
 }
